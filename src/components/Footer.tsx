@@ -5,6 +5,7 @@ import { sectionOf } from '../lib/sections'
 import { cn } from '../lib/utils'
 import { CommunitySection } from './CommunitySection'
 import { DotPattern } from './DotPattern'
+import { InstallLink } from './InstallApp'
 import { Logo } from './Logo'
 
 /** The disclaimer, DMCA notice and data credits live on the Profile page. */
@@ -43,6 +44,9 @@ export function Footer() {
               <Link to="/app" className="transition-colors hover:text-accent">
                 Android app
               </Link>
+            </li>
+            <li className="empty:hidden">
+              <InstallLink className="transition-colors hover:text-accent" />
             </li>
             <li>
               <Link to="/" className="transition-colors hover:text-accent">

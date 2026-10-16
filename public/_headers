@@ -1,0 +1,6 @@
+# Cloudflare Pages response headers. The service worker and manifest must always be revalidated,
+# or browsers keep running an old worker after a deploy.
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache
