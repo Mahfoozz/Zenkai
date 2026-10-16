@@ -6,6 +6,7 @@ import { setStatus, STATUS_LABEL, useList, type ListStatus } from '../lib/librar
 import { AnimeCard } from '../components/AnimeCard'
 import { ContinueRow } from '../components/ContinueRow'
 import { GradientText } from '../components/GradientText'
+import { SurpriseButton } from '../components/SurpriseMe'
 import { Tabs } from '../components/Tabs'
 
 type Filter = 'all' | ListStatus
@@ -36,7 +37,10 @@ export default function ListPage() {
       <ContinueRow className="mt-10" />
 
       <section className="mx-auto mt-10 max-w-7xl px-4 sm:px-6" aria-label="Watchlist">
-        <h2 className="mb-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">Watchlist</h2>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">Watchlist</h2>
+          <SurpriseButton compact />
+        </div>
         {list.length > 0 && (
           <Tabs<Filter>
             value={filter}

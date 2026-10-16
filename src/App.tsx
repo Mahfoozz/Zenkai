@@ -11,6 +11,7 @@ import { ShortcutsHelp } from './components/ShortcutsHelp'
 import { Toaster } from './components/Toaster'
 import { MovieSearchModal } from './components/MovieSearchModal'
 import { SearchModal } from './components/SearchModal'
+import { SurpriseModal } from './components/SurpriseMe'
 import { useTrackHistory } from './lib/backToDetails'
 import { initAniListSync } from './lib/anilist'
 import { useApplyTvMode } from './lib/keys'
@@ -107,6 +108,7 @@ export default function App() {
       {!bare && <Footer />}
       {!bare && <MobileDock />}
       {!bare && section === 'anime' && <SearchModal />}
+      {!bare && section === 'anime' && <SurpriseModal />}
       {!bare && section === 'movies' && <MovieSearchModal />}
       <Toaster />
       <ShortcutsHelp />

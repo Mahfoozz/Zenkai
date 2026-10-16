@@ -57,6 +57,7 @@ Across everything:
 - **Continue watching / reading** shelves, watchlist and progress, stored locally in your browser.
 - **AniList sync** and a customisable profile.
 - **Command-palette search** (`Ctrl/⌘ + K` or `/`) with keyboard navigation and filters.
+- **Surprise me** (`R`, or the button on Home and My List): a random pick from your plan-to-watch list (optionally on hold too), or anything popular you haven't added, filtered by length, genre and score.
 - **Theme toggle** with a circular reveal animation.
 - **Phone:** bottom dock navigation. **Desktop:** floating glass navbar.
 - **Multi-audio dubs** through the ACDN resolver, played in Zenkai's own player.
@@ -116,7 +117,7 @@ Press **`?`** anywhere (or use *Keyboard shortcuts* in the footer) to see the fu
 
 | Where | Keys |
 | ----- | ---- |
-| Everywhere | `/` or `Ctrl/⌘ K` search · `?` shortcuts |
+| Everywhere | `/` or `Ctrl/⌘ K` search · `?` shortcuts · `R` surprise me (anime) |
 | Anime player | `Space`/`K` play · `←` `→` seek 10 s (`Shift` 30 s) · `J` `L` ±10 s · `↑` `↓` volume · `0`-`9` jump to % · `Home` `End` · `,` `.` frame step · `<` `>` speed · `N` `P` next/prev episode · `M` mute · `C` captions · `F` fullscreen · `I` picture-in-picture · `Tab` skip intro |
 | Manga reader | `←` `→` pages · `Space`/`PgDn`/`Shift+Space`/`PgUp` · `Home` `End` · `[` `]` chapters · `C` chapters · `S` settings · `F` fullscreen |
 | Novel reader | `←` `→` or `[` `]` chapters · `Esc` close panel |
