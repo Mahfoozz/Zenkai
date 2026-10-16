@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { MobileDock } from './components/MobileDock'
 import { Navbar } from './components/Navbar'
+import { PageLoadBoundary } from './components/PageLoadBoundary'
 import { ScrollProgress } from './components/ScrollProgress'
 import { ScrollToTop } from './components/ScrollToTop'
 import { TopLoader } from './components/TopLoader'
@@ -68,6 +69,7 @@ export default function App() {
       {!bare && <ScrollProgress />}
       <ScrollToTop />
       {!bare && !isDetailsPath(pathname) && <Navbar />}
+      <PageLoadBoundary resetKey={pathname}>
       <Suspense fallback={<div className="min-h-[70svh]" />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -104,6 +106,7 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
+      </PageLoadBoundary>
       {!bare && <Footer />}
       {!bare && <MobileDock />}
       {!bare && section === 'anime' && <SearchModal />}

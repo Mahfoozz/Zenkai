@@ -7,7 +7,15 @@
     <meta name="description" content="Watch anime and movies, read manga and novels in one place. Track what you watch, pick up where you left off, and discover your next favourite. Free, fast and beautifully simple." />
     <meta name="keywords" content="watch anime online, anime streaming, watch movies, read manga online, read novels, light novels, anime tracker, Zenkai" />
     <meta name="application-name" content="Zenkai" />
-    <meta name="theme-color" content="#050506" />
+    <meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#050506" media="(prefers-color-scheme: dark)" />
+    <!-- Installable web app (manifest + public/sw.js). use-credentials so it still loads behind a login cookie. -->
+    <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Zenkai" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="%SITE_URL%/" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
@@ -54,6 +62,9 @@
           var t = localStorage.getItem('zenkai-theme')
           var dark = t ? t === 'dark' : true
           document.documentElement.classList.toggle('dark', dark)
+          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+            m.setAttribute('content', dark ? '#050506' : '#f6f6f8')
+          })
         } catch (e) {}
       })()
     </script>

@@ -1,10 +1,15 @@
 import { useSyncExternalStore } from 'react'
 
 export type ToastKind = 'success' | 'info' | 'error'
+export interface ToastAction {
+  label: string
+  onClick: () => void
+}
 export interface ToastItem {
   id: number
   message: string
   kind: ToastKind
+  action?: ToastAction
 }
 
 let items: ToastItem[] = []
@@ -17,12 +22,15 @@ export const dismissToast = (id: number) => {
   emit()
 }
 
-/** Show a small toast. The same message replaces its earlier copy, so rapid changes never stack up. */
-export function toast(message: string, kind: ToastKind = 'success') {
+/**
+ * Show a small toast. The same message replaces its earlier copy, so rapid changes never stack up.
+ * With an action it stays until the action is used or the toast is dismissed.
+ */
+export function toast(message: string, kind: ToastKind = 'success', action?: ToastAction) {
   const id = ++n
-  items = [...items.filter((t) => t.message !== message), { id, message, kind }].slice(-3)
+  items = [...items.filter((t) => t.message !== message), { id, message, kind, action }].slice(-3)
   emit()
-  window.setTimeout(() => dismissToast(id), kind === 'error' ? 4200 : 2600)
+  if (!action) window.setTimeout(() => dismissToast(id), kind === 'error' ? 4200 : 2600)
 }
 
 export const useToasts = () =>

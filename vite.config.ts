@@ -1,5 +1,8 @@
+import { createHash } from 'node:crypto'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { Readable } from 'node:stream'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, type Plugin, type Rolldown } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -83,7 +86,51 @@ function zenkaiSeo(): Plugin {
   }
 }
 
+/** Pages the installed app launches into (manifest start_url + shortcuts); their code is precached for offline launch. */
+const LAUNCH_PAGES = ['HomePage', 'SchedulePage', 'ListPage']
+
+/** The launch pages' chunks with everything they statically import, CSS included, as /assets/... URLs. */
+function launchAssets(bundle: Rolldown.OutputBundle): string[] {
+  const out = new Set<string>()
+  const add = (name: string) => {
+    const c = bundle[name]
+    if (c?.type !== 'chunk' || out.has(`/${name}`)) return
+    out.add(`/${name}`)
+    c.viteMetadata?.importedCss.forEach((css) => out.add(`/${css}`))
+    c.imports.forEach(add)
+  }
+  for (const c of Object.values(bundle)) if (c.type === 'chunk' && LAUNCH_PAGES.some((p) => c.facadeModuleId?.replace(/\\/g, '/').endsWith(`/src/pages/${p}.tsx`))) add(c.fileName)
+  return [...out]
+}
+
+/**
+ * Stamps the build id into dist/sw.js (public/sw.js has '__BUILD__'), so every deploy that changes the app
+ * ships a new service worker: fresh cache names and the "New version available" toast. Also fills in the
+ * launch pages' assets ('__LAUNCH__').
+ */
+function zenkaiSw(): Plugin {
+  let outDir = 'dist'
+  return {
+    name: 'zenkai-sw',
+    apply: 'build',
+    configResolved: (c) => void (outDir = resolve(c.root, c.build.outDir)),
+    writeBundle(_, bundle) {
+      const file = join(outDir, 'sw.js')
+      if (!existsSync(file)) return // the SSR server build has no public dir
+      const html = bundle['index.html']
+      const id = createHash('sha256')
+        .update(Object.keys(bundle).sort().join('\n'))
+        .update(html?.type === 'asset' ? html.source : '')
+        .digest('hex')
+        .slice(0, 12)
+      const launch = launchAssets(bundle)
+      if (!launch.length) this.warn('no launch page chunks found for sw.js')
+      writeFileSync(file, readFileSync(file, 'utf8').replace("'__BUILD__'", JSON.stringify(id)).replace("'__LAUNCH__'", JSON.stringify(launch)))
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), zenkaiApi(), zenkaiSeo()],
+  plugins: [react(), tailwindcss(), zenkaiApi(), zenkaiSeo(), zenkaiSw()],
   server: { host: true },
 })

@@ -61,6 +61,7 @@ Across everything:
 - **Phone:** bottom dock navigation. **Desktop:** floating glass navbar.
 - **Multi-audio dubs** through the ACDN resolver, played in Zenkai's own player.
 - **Zenkai Shield**, an optional invisible proof-of-work gate for your API.
+- **Installable web app** (PWA) on iPhone, iPad, desktop and Android, with an offline-ready app shell and a one-tap reload when a new version is out.
 
 ## Get the app
 
@@ -73,6 +74,15 @@ The Android app is published on the release repo:
 3. Install and open Zenkai.
 
 The web app reads that repo live. The home-page banner and `/app` show the current version, release notes, APK links, sizes, download counts and stars. New releases appear within five minutes with no redeploy.
+
+### Install from the browser
+
+On iPhone, iPad, desktop (or Android without the APK), install the web app instead:
+
+- **Chrome, Edge, Samsung Internet:** *Install app* on `/app` or in the footer, or the install icon in the address bar.
+- **Safari on iPhone / iPad:** Share, then *Add to Home Screen*.
+
+It opens in its own window. `public/sw.js` caches only the app shell and hashed `/assets/*` (never `/api`, `/proxy`, video or other sites), so it starts instantly and still opens offline. It only runs in production builds. To roll it back, don't just delete `public/sw.js` (installed workers would keep running); replace it with a worker that deletes its caches and calls `self.registration.unregister()`, and drop `initPwa()` from `src/main.tsx`.
 
 ## Quick start
 

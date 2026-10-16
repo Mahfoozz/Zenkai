@@ -31,6 +31,7 @@ import { ApkButton } from '../components/ApkButton'
 import { AuroraBackground } from '../components/AuroraBackground'
 import { BlurText } from '../components/BlurText'
 import { DiscordIcon, GithubIcon, TelegramIcon } from '../components/BrandIcons'
+import { InstallApp } from '../components/InstallApp'
 import { NumberTicker } from '../components/NumberTicker'
 import { PhoneMockup } from '../components/PhoneMockup'
 import { Reveal } from '../components/Reveal'
@@ -81,7 +82,7 @@ const FAQ: { q: string; a: ReactNode }[] = [
     q: 'Is there an iPhone or desktop version?',
     a: (
       <>
-        The app is for Android. Everywhere else, use Zenkai in your browser: <Link to="/home" className="font-semibold underline underline-offset-4">go to the web app</Link>.
+        The app is for Android. Everywhere else, use Zenkai in your browser: <Link to="/home" className="font-semibold underline underline-offset-4">go to the web app</Link>. You can install it from there too: <span className="font-semibold">Install app</span> in Chrome or Edge, or Share then <span className="font-semibold">Add to Home Screen</span> on iPhone and iPad.
       </>
     ),
   },
@@ -222,6 +223,8 @@ export default function AppPage() {
               <Smartphone className="size-4" />
               Android only. The APK comes straight from GitHub releases.
             </p>
+            {/* Secondary: iPhone, desktop, or Android without the APK */}
+            <InstallApp className="mt-6 max-w-xl" />
 
             <dl className="mt-10 grid max-w-xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
               <Stat label="APK downloads" loading={waiting}>

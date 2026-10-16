@@ -23,9 +23,8 @@ function readInitial(): Theme {
 
 function applyTheme(t: Theme) {
   document.documentElement.classList.toggle('dark', t === 'dark')
-  document
-    .querySelector('meta[name="theme-color"]')
-    ?.setAttribute('content', t === 'dark' ? '#050506' : '#f6f6f8')
+  // Both media variants (light / dark OS) follow the app's own theme once it is known.
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', t === 'dark' ? '#050506' : '#f6f6f8'))
   try {
     localStorage.setItem(STORAGE_KEY, t)
   } catch {

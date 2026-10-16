@@ -4,10 +4,12 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { SearchProvider } from './context/SearchContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { initPwa } from './lib/pwa'
 import { startShield } from './lib/shield'
 import './index.css'
 
 startShield()
+initPwa()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
