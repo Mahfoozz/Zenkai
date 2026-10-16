@@ -90,6 +90,8 @@ npm run dev        # http://localhost:5173
 | `npm run dev`     | Dev server, with the API served in-process  |
 | `npm run build`   | Type-checks, then builds to `dist/`         |
 | `npm run preview` | Serves the production build locally         |
+| `npm run build:selfhost` | Builds the site and the Node API bundle for your own server |
+| `npm start`       | Runs the self-hosted server (`serve.js`)    |
 
 `npm run dev` serves `/api/*` and `/proxy` through a Vite middleware, so there is nothing else to run. A step-by-step guide for phones, PCs and hosting lives at `/self-host` in the app.
 
@@ -109,6 +111,23 @@ npx wrangler pages deploy dist --project-name my-zenkai
 ```
 
 If the frontend is hosted elsewhere, point it at your API with `VITE_API_BASE`.
+
+### On your own server (Node)
+
+`serve.js` runs the same API handler as the Cloudflare Functions and serves the built site, so one Node process is all you need. It reads `.env` itself.
+
+```bash
+cp .env.example .env      # set VITE_SITE_URL to your domain, plus the server options below
+npm install
+npm run build:selfhost    # builds dist/ (site) and dist-server/ (API)
+npm start                 # http://localhost:4180
+```
+
+Keep it running with a process manager, for example `pm2 start serve.js --name zenkai && pm2 save`. After pulling updates, run `npm run build:selfhost` again and restart.
+
+Put a reverse proxy (Nginx, Nginx Proxy Manager, Caddy) in front of it for HTTPS. The server only trusts the proxy's `X-Real-IP` header when the request comes from a private address, so visitors can't fake their IP to get around Zenkai Shield. To make the proxy the only way in, set `HOST` to the address the proxy connects from, such as a Docker bridge (`172.17.0.1`) or `127.0.0.1`.
+
+**Private site.** Set `SITE_PASSWORD` and every page, file and API call needs a sign-in first. Visitors get a login page and stay signed in for 30 days; `/logout` signs out. Failed attempts are limited per IP, `robots.txt` blocks all crawlers, and every response is sent with `X-Robots-Tag: noindex`. Changing the password signs everyone out.
 
 ## Keyboard & TV remote
 
@@ -134,6 +153,9 @@ Copy `.env.example` to `.env` and adjust.
 | `VITE_API_BASE`          | build  | API origin when the frontend and API are hosted separately |
 | `SHIELD_SECRET`          | server | Turns on Zenkai Shield. Unset means off. On Cloudflare: `npx wrangler pages secret put SHIELD_SECRET` |
 | `GITHUB_TOKEN`           | server | Optional. Lifts GitHub's 60 requests/hour anonymous limit for the release data |
+| `SITE_PASSWORD`          | server | Self-hosted only. Puts the whole site behind a password. Unset means public |
+| `HOST`                   | server | Self-hosted only. Address `serve.js` listens on. Default `0.0.0.0` |
+| `PORT`                   | server | Self-hosted only. Port `serve.js` listens on. Default `4180` |
 
 ## Project structure
 
@@ -146,6 +168,8 @@ src/
   lib/          utils · constants · mappers · servers · episodes · progress · subtitles · backToDetails
 server/         handler.js: one Web-standard API used by Pages Functions AND `npm run dev`
 functions/      Cloudflare Pages Functions (thin wrappers around server/handler.js)
+serve.js        Self-hosted Node server: static site + the same API handler
+gate.js         Optional password gate used by serve.js (SITE_PASSWORD)
 public/         Static assets and anime-mapping.json
 docs/           README assets
 ```

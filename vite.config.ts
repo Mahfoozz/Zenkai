@@ -1,5 +1,5 @@
 import { Readable } from 'node:stream'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -48,11 +48,12 @@ const PAGES: Array<[path: string, freq: string, priority: string]> = [
 ]
 
 /**
- * Site URL for absolute links (share image, canonical, sitemap). Set VITE_SITE_URL to your domain;
+ * Site URL for absolute links (share image, canonical, sitemap). Set VITE_SITE_URL (env or .env) to your domain;
  * Cloudflare Pages / Vercel URLs are picked up automatically when it is not set.
  */
 const SITE_URL = (
   process.env.VITE_SITE_URL ||
+  loadEnv('', process.cwd(), 'VITE_SITE_URL').VITE_SITE_URL ||
   process.env.CF_PAGES_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') ||
   'https://zenkai.pages.dev'

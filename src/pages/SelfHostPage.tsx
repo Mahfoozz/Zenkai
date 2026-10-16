@@ -226,6 +226,18 @@ const FAQ: { q: string; a: ReactNode }[] = [
       </>
     ),
   },
+  {
+    q: 'Can I run it on my own server instead of Cloudflare?',
+    a: (
+      <>
+        Yes. Run <code className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[0.85em]">npm run build:selfhost</code> and then{' '}
+        <code className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[0.85em]">npm start</code>. One Node process serves the site and the API on port 4180. Put a reverse proxy such as Nginx or Caddy in front of it for HTTPS.
+        <span className="mt-2 block">
+          To keep it private, set <code className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[0.85em]">SITE_PASSWORD</code> in <code className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[0.85em]">.env</code>. Everyone has to sign in first, and search engines and bots are kept out.
+        </span>
+      </>
+    ),
+  },
   { q: 'Does Zenkai host the videos?', a: 'No. Zenkai hosts zero content and has no affiliation with the content providers available through the app.' },
   {
     q: 'Something broke. Where do I ask?',
