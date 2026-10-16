@@ -2,6 +2,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, ChevronDown } from 'lucide-react'
+import { isTvMode } from '../lib/keys'
 import { cn } from '../lib/utils'
 
 export interface Option {
@@ -73,7 +74,8 @@ export function CustomSelect({
 
   const onKey = (e: React.KeyboardEvent) => {
     if (!open) {
-      if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
+      // TV: the D-pad moves on past a closed dropdown; OK opens it
+      if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key) && !(isTvMode() && e.key.startsWith('Arrow'))) {
         e.preventDefault()
         openMenu()
       }

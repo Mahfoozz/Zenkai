@@ -75,6 +75,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       [['/'], 'Search'],
       [['Ctrl', 'K'], 'Search (⌘ K on Mac)'],
       [['?'], 'This list'],
+      [['R'], 'Surprise me: pick something to watch (anime)'],
       [['1', '–', '4'], 'Pick a section on the opening page'],
     ],
   },

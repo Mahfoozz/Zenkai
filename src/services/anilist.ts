@@ -6,7 +6,7 @@ const TTL = 5 * 60 * 1000
 
 const cache = new Map<string, { at: number; data: unknown }>()
 
-async function gql<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
+export async function gql<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
   const key = query + JSON.stringify(variables)
   const hit = cache.get(key)
   if (hit && Date.now() - hit.at < TTL) return hit.data as T

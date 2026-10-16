@@ -13,6 +13,7 @@ import { ErrorState } from '../components/ErrorState'
 import { GenreMarquee } from '../components/GenreMarquee'
 import { HeroCarousel } from '../components/HeroCarousel'
 import { Skeleton } from '../components/Skeleton'
+import { SurpriseStrip } from '../components/SurpriseMe'
 
 export default function HomePage() {
   const home = useAsync(fetchHome, [])
@@ -69,6 +70,7 @@ export default function HomePage() {
       <div className="relative z-10 mt-10 space-y-12 pb-20 sm:space-y-16">
         <ProfileCard />
         <ContinueRow />
+        <SurpriseStrip />
         <GenreMarquee />
 
         <AnimeRow
